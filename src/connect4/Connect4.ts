@@ -24,14 +24,20 @@ export class Connect4 {
   constructor(private players: Player[]) {}
 
   /**
+   * TODO!
+   * Places a token on the board.
    *
-   * @param index Places a token on the board.
+   * @param index The index in which to place a token in the array.
    * @returns boolean Returns true if the placement of the token is correct, else otherwise.
    */
   move(index): boolean {
     return false;
   }
 
+  /**
+   * TODO!
+   * Returns a game state at any point in time.
+   */
   get state(): Connect4State {
     return {
       winner: null,
