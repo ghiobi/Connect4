@@ -21,6 +21,17 @@ export interface Connect4State {
 }
 
 export class Connect4 {
+  constructor(private players: Player[]) {}
+
+  /**
+   *
+   * @param index Places a token on the board.
+   * @returns boolean Returns true if the placement of the token is correct, else otherwise.
+   */
+  move(index): boolean {
+    return false;
+  }
+
   get state(): Connect4State {
     return {
       winner: null,
