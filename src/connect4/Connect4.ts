@@ -24,7 +24,11 @@ export class Connect4 {
   static readonly HEIGHT = 6;
   static readonly WIDHT = 7;
 
-  constructor(private players: Player[]) {}
+  private board: Player[];
+
+  constructor(private players: Player[]) {
+    this.board = new Array(Connect4.WIDHT * Connect4.HEIGHT).fill(null);
+  }
 
   /**
    * Returns the column by the given index.
@@ -52,19 +56,10 @@ export class Connect4 {
    * Returns a game state at any point in time.
    */
   get state(): Connect4State {
-    const p = this.players;
     return {
       winner: null,
-      playing: p[0],
-      // prettier-ignore
-      board: [
-        null, null, null, null, null, null, null,
-        null, null, null, null, null, null, null,
-        null, null, null, null, null, null, null,
-        null, null, null, null, null, null, null,
-        null, null, p[1], null, null, null, null,
-        null, null, p[0], p[0], p[1], null, null
-      ],
+      playing: this.players[0],
+      board: this.board,
       status: Connect4GameStatus.IN_PROGRESS
     };
   }

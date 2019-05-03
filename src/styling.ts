@@ -1,6 +1,7 @@
 import jss from "jss";
 import global from "jss-plugin-global";
 import preset from "jss-preset-default";
+import { Connect4 } from "./connect4";
 
 jss.setup(preset());
 
@@ -36,8 +37,8 @@ const style = {
     overflow: "auto"
   },
   connect4Slot: {
-    width: CONNECT4WIDTH / 7,
-    height: CONNECT4WIDTH / 7,
+    width: CONNECT4WIDTH / Connect4.WIDHT,
+    height: CONNECT4WIDTH / Connect4.WIDHT,
     float: "left",
     position: "relative"
   },
@@ -49,8 +50,8 @@ const style = {
     left: 0,
     bottom: 0,
     margin: "auto",
-    width: (CONNECT4WIDTH / 7) * 0.9,
-    height: (CONNECT4WIDTH / 7) * 0.9
+    width: (CONNECT4WIDTH / Connect4.WIDHT) * 0.9,
+    height: (CONNECT4WIDTH / Connect4.WIDHT) * 0.9
   },
   connect4Foot: {
     height: CONNECT4FOOTSIZE,
