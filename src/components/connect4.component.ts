@@ -27,7 +27,17 @@ export class Connect4Component {
     return this.game.state;
   }
 
-  move(index): void {}
+  /**
+   * Called when a user clicks on a token.
+   *
+   * @param index The index in which the column was selected.
+   */
+  select(index): void {
+    const column = this.game.getColumnByIndex(index);
+
+    this.game.insert(column);
+    console.log("The selected column is -> ", column);
+  }
 
   /**
    * TODO!
@@ -39,7 +49,7 @@ export class Connect4Component {
         m(
           "div",
           { class: styling.connect4Grid },
-          this.state.board.map((player: Player) =>
+          this.state.board.map((player: Player, index: number) =>
             m(
               "div",
               {
@@ -47,6 +57,7 @@ export class Connect4Component {
               },
               m("div", {
                 class: styling.connect4SlotToken,
+                onclick: () => !player && this.select(index),
                 style: {
                   backgroundColor: player ? player.color : "#FFFDF7"
                 }

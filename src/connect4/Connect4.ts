@@ -21,16 +21,29 @@ export interface Connect4State {
 }
 
 export class Connect4 {
+  static readonly HEIGHT = 6;
+  static readonly WIDHT = 7;
+
   constructor(private players: Player[]) {}
 
   /**
-   * TODO!
-   * Places a token on the board.
+   * Returns the column by the given index.
    *
-   * @param index The index in which to place a token in the array.
-   * @returns boolean Returns true if the placement of the token is correct, else otherwise.
+   * @param index An number starting from [0, Connect4.WIDHT - 1].
    */
-  move(index: number): boolean {
+  getColumnByIndex(index: number): number {
+    const float = index / Connect4.WIDHT;
+    return Math.round((float - Math.floor(float)) * Connect4.WIDHT);
+  }
+
+  /**
+   * TODO!
+   * Places a token in a column.
+   *
+   * @param column The column in which to place a token.
+   * @returns boolean Returns true if the placement of the token is correct, false otherwise.
+   */
+  insert(column: number): boolean {
     return false;
   }
 
