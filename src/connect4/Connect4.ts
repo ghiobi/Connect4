@@ -30,7 +30,7 @@ export class Connect4 {
    * @param index The index in which to place a token in the array.
    * @returns boolean Returns true if the placement of the token is correct, else otherwise.
    */
-  move(index): boolean {
+  move(index: number): boolean {
     return false;
   }
 
@@ -39,10 +39,19 @@ export class Connect4 {
    * Returns a game state at any point in time.
    */
   get state(): Connect4State {
+    const p = this.players;
     return {
       winner: null,
-      playing: null,
-      board: null,
+      playing: p[0],
+      // prettier-ignore
+      board: [
+        null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null,
+        null, null, p[1], null, null, null, null,
+        null, null, p[0], p[0], p[1], null, null
+      ],
       status: Connect4GameStatus.IN_PROGRESS
     };
   }

@@ -1,3 +1,3 @@
 export class Player {
-  constructor(private color: string) {}
+  constructor(public color: string) {}
 }

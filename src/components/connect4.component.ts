@@ -1,7 +1,7 @@
 import m from "mithril";
+import styling from "../styling";
 
-import { Connect4, Connect4State } from "../connect4";
-import { Player } from "../connect4";
+import { Connect4, Connect4State, Player } from "../connect4";
 
 export class Connect4Component {
   private game: Connect4;
@@ -27,11 +27,24 @@ export class Connect4Component {
     return this.game.state;
   }
 
+  move(index): void {}
+
   /**
    * TODO!
    * Renders the borad here.
    */
   view() {
-    return m("div", "Connect4 game");
+    return m(
+      "div",
+      { class: styling.connect4 },
+      this.state.board.map((player: Player) =>
+        m("div", {
+          class: styling.connect4Slot,
+          style: {
+            backgroundColor: player ? player.color : "white"
+          }
+        })
+      )
+    );
   }
 }
