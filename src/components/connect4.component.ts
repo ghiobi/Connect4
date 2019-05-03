@@ -17,7 +17,7 @@ export class Connect4Component {
    * Creates a new game.
    */
   createGame(): void {
-    this.game = new Connect4([new Player("red"), new Player("blue")]);
+    this.game = new Connect4([new Player("#F46197"), new Player("#F7DD5B")]);
   }
 
   /**
@@ -34,17 +34,44 @@ export class Connect4Component {
    * Renders the borad here.
    */
   view() {
-    return m(
-      "div",
-      { class: styling.connect4 },
-      this.state.board.map((player: Player) =>
+    return m("div", [
+      m("div", { class: styling.connect4 }, [
+        m(
+          "div",
+          { class: styling.connect4Grid },
+          this.state.board.map((player: Player) =>
+            m(
+              "div",
+              {
+                class: styling.connect4Slot
+              },
+              m("div", {
+                class: styling.connect4SlotToken,
+                style: {
+                  backgroundColor: player ? player.color : "#FFFDF7"
+                }
+              })
+            )
+          )
+        ),
         m("div", {
-          class: styling.connect4Slot,
+          class: styling.connect4Foot,
           style: {
-            backgroundColor: player ? player.color : "white"
+            left: 0
+          }
+        }),
+        m("div", {
+          class: styling.connect4Foot,
+          style: {
+            right: 0
           }
         })
+      ]),
+      m(
+        "button",
+        { class: styling.connect4NewGameButton, onclick: this.createGame },
+        "NEW GAME"
       )
-    );
+    ]);
   }
 }
