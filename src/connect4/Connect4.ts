@@ -84,25 +84,6 @@ export class Connect4 {
   }
 
   /**
-   * Gets the next player.
-   *
-   * @returns player A Player
-   */
-  getNextPlayer(): Player {
-    return this.players[0] === this.playing ? this.players[1] : this.players[0];
-  }
-
-  /**
-   * TODO!
-   * Determines if there is a player.
-   *
-   * @returns Returns true if there is, false otherwise.
-   */
-  hasWinner(): boolean {
-    return false;
-  }
-
-  /**
    * Returns a game state at any point in time.
    */
   get state(): Connect4State {
@@ -118,10 +99,72 @@ export class Connect4 {
   }
 
   /**
+   * Gets the next player.
+   *
+   * @returns player A Player
+   */
+  private getNextPlayer(): Player {
+    return this.players[0] === this.playing ? this.players[1] : this.players[0];
+  }
+
+  /**
+   * Determines if there is a winner.
+   *
+   * @returns Returns true if there is, false otherwise.
+   */
+  private hasWinner(): boolean {
+    // HORIZONTAL CHECK
+    return (
+      this.hasWinnerOnLinearSlots(
+        Connect4.HEIGHT,
+        Connect4.WIDHT,
+        (i, j) => i * Connect4.WIDHT + j
+      ) ||
+      // VERTICAL CHECK
+      this.hasWinnerOnLinearSlots(
+        Connect4.WIDHT,
+        Connect4.HEIGHT,
+        (i, j) => j * Connect4.WIDHT + i
+      )
+    );
+  }
+
+  /**
+   * Checks where there is a winner on the horizontal or vertical axis.
+   *
+   * @param OUTER The outer loop limit.
+   * @param INNER The inner loop limit.
+   * @param position Calculates the position based on the i and j indexes.
+   */
+  private hasWinnerOnLinearSlots(
+    OUTER: number,
+    INNER: number,
+    position: (outer: number, inner: number) => number
+  ) {
+    for (let i = 0; i < OUTER; i++) {
+      let previous = null;
+      let count = 0;
+      for (let j = 0; j < INNER; j++) {
+        const current = this.board[position(i, j)];
+        if (current !== null && previous === current) {
+          previous = current;
+          if (++count === Connect4.CONNECT) {
+            return true;
+          }
+        } else {
+          previous = current;
+          count = 1;
+        }
+      }
+    }
+    return false;
+  }
+
+  /**
    * Returns the game status state.
    */
-  get status(): Connect4GameStatus {
-    if (this.plays / 2 < Connect4.CONNECT) {
+  private get status(): Connect4GameStatus {
+    if (this.plays < Connect4.CONNECT * 2 - 1) {
       return Connect4GameStatus.IN_PROGRESS;
     }
     if (this.hasWinner()) {
