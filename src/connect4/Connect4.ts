@@ -28,10 +28,12 @@ export class Connect4 {
   private board: Player[];
   private playing: Player;
   private plays: number = 0;
+  private cache: Connect4State;
 
   constructor(private players: Player[]) {
     this.board = new Array<Player>(Connect4.WIDHT * Connect4.HEIGHT).fill(null);
     this.playing = this.players[0];
+    this.cache = this.state;
   }
 
   /**
@@ -52,6 +54,10 @@ export class Connect4 {
    */
   insert(column: number): boolean {
     let successful = false;
+
+    if (this.state.status !== Connect4GameStatus.IN_PROGRESS) {
+      return successful;
+    }
 
     for (let i = 0; i < Connect4.HEIGHT; i++) {
       const current = i * Connect4.WIDHT + column;
@@ -78,6 +84,7 @@ export class Connect4 {
     if (successful) {
       this.playing = this.getNextPlayer();
       this.plays++;
+      this.cache = null;
     }
 
     return successful;
@@ -87,15 +94,21 @@ export class Connect4 {
    * Returns a game state at any point in time.
    */
   get state(): Connect4State {
-    const status = this.status;
+    if (!this.cache) {
+      const status = this.status;
 
-    return {
-      winner:
-        status === Connect4GameStatus.HAS_WINNER ? this.getNextPlayer() : null,
-      playing: this.players[0],
-      board: this.board,
-      status
-    };
+      this.cache = {
+        winner:
+          status === Connect4GameStatus.HAS_WINNER
+            ? this.getNextPlayer()
+            : null,
+        playing: this.players[0],
+        board: [...this.board],
+        status
+      };
+    }
+
+    return this.cache;
   }
 
   /**
