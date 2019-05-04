@@ -1,7 +1,12 @@
 import m from "mithril";
 import styling from "../styling";
 
-import { Connect4, Connect4State, Player } from "../connect4";
+import {
+  Connect4,
+  Connect4State,
+  Player,
+  Connect4GameStatus
+} from "../connect4";
 
 export class Connect4Component {
   private game: Connect4;
@@ -57,7 +62,8 @@ export class Connect4Component {
               },
               m("div", {
                 class: styling.connect4SlotToken,
-                onclick: () => !player && this.select(index),
+                onclick: e =>
+                  !player ? this.select(index) : (e.redraw = false),
                 style: {
                   backgroundColor: player ? player.color : "#FFFDF7"
                 }
@@ -80,7 +86,16 @@ export class Connect4Component {
       ]),
       m(
         "button",
-        { class: styling.connect4NewGameButton, onclick: this.createGame },
+        {
+          class: styling.connect4NewGameButton,
+          style: {
+            color:
+              this.state.status !== Connect4GameStatus.IN_PROGRESS
+                ? "white"
+                : ""
+          },
+          onclick: this.createGame.bind(this)
+        },
         "NEW GAME"
       )
     ]);

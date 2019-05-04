@@ -23,9 +23,11 @@ export interface Connect4State {
 export class Connect4 {
   static readonly HEIGHT = 6;
   static readonly WIDHT = 7;
+  static readonly CONNECT = 4;
 
   private board: Player[];
   private playing: Player;
+  private plays: number = 0;
 
   constructor(private players: Player[]) {
     this.board = new Array<Player>(Connect4.WIDHT * Connect4.HEIGHT).fill(null);
@@ -75,6 +77,7 @@ export class Connect4 {
 
     if (successful) {
       this.playing = this.getNextPlayer();
+      this.plays++;
     }
 
     return successful;
@@ -91,14 +94,42 @@ export class Connect4 {
 
   /**
    * TODO!
+   * Determines if there is a player.
+   *
+   * @returns Returns true if there is, false otherwise.
+   */
+  hasWinner(): boolean {
+    return false;
+  }
+
+  /**
    * Returns a game state at any point in time.
    */
   get state(): Connect4State {
+    const status = this.status;
+
     return {
-      winner: null,
+      winner:
+        status === Connect4GameStatus.HAS_WINNER ? this.getNextPlayer() : null,
       playing: this.players[0],
       board: this.board,
-      status: Connect4GameStatus.IN_PROGRESS
+      status
     };
+  }
+
+  /**
+   * Returns the game status state.
+   */
+  get status(): Connect4GameStatus {
+    if (this.plays / 2 < Connect4.CONNECT) {
+      return Connect4GameStatus.IN_PROGRESS;
+    }
+    if (this.hasWinner()) {
+      return Connect4GameStatus.HAS_WINNER;
+    }
+    if (this.plays === this.board.length) {
+      return Connect4GameStatus.TIE;
+    }
+    return Connect4GameStatus.IN_PROGRESS;
   }
 }
