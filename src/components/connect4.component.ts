@@ -44,12 +44,63 @@ export class Connect4Component {
     console.log("The selected column is -> ", column);
   }
 
+  is(state: Connect4GameStatus): boolean {
+    return this.state.status === state;
+  }
+
   /**
    * TODO!
    * Renders the borad here.
    */
   view() {
     return m("div", [
+      m(
+        "div",
+        {
+          style: {
+            display: "flex",
+            color: "#fff",
+            justifyContent: "center",
+            alignItems: "center",
+            marginBottom: "2rem"
+          }
+        },
+        m(
+          "div",
+          { style: { flex: "1" } },
+          this.is(Connect4GameStatus.IN_PROGRESS) &&
+            m(
+              "div",
+              { style: { textAlign: "right", marginRight: "50px" } },
+              "IT'S"
+            )
+        ),
+        m("div", {
+          class: styling.connect4Token,
+          style: {
+            backgroundColor: this.is(Connect4GameStatus.IN_PROGRESS)
+              ? this.state.playing.color
+              : this.state.winner
+              ? this.state.winner.color
+              : "black",
+            position: "absolute",
+            margin: "auto"
+          }
+        }),
+        m(
+          "div",
+          { style: { flex: "1" } },
+          m(
+            "div",
+            { style: { marginLeft: "50px" } },
+            this.is(Connect4GameStatus.IN_PROGRESS)
+              ? "TURN."
+              : this.state.winner
+              ? "WON."
+              : "TIED."
+          )
+        )
+      ),
       m("div", { class: styling.connect4 }, [
         m(
           "div",
@@ -61,7 +112,7 @@ export class Connect4Component {
                 class: styling.connect4Slot
               },
               m("div", {
-                class: styling.connect4SlotToken,
+                class: styling.connect4SlotToken + " " + styling.connect4Token,
                 onclick: e =>
                   !player ? this.select(index) : (e.redraw = false),
                 style: {
@@ -89,10 +140,7 @@ export class Connect4Component {
         {
           class: styling.connect4NewGameButton,
           style: {
-            color:
-              this.state.status !== Connect4GameStatus.IN_PROGRESS
-                ? "white"
-                : ""
+            color: !this.is(Connect4GameStatus.IN_PROGRESS) ? "white" : ""
           },
           onclick: this.createGame.bind(this)
         },

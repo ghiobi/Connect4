@@ -12,7 +12,9 @@ const style = {
   "@global": {
     body: {
       margin: 0,
-      backgroundColor: "#384D65"
+      backgroundColor: "#384D65",
+      fontFamily:
+        '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"'
     },
     "*": {
       boxSizing: "border-box"
@@ -42,16 +44,18 @@ const style = {
     float: "left",
     position: "relative"
   },
+  connect4Token: {
+    borderRadius: "50%",
+    width: (CONNECT4WIDTH / Connect4.WIDHT) * 0.9,
+    height: (CONNECT4WIDTH / Connect4.WIDHT) * 0.9
+  },
   connect4SlotToken: {
     position: "absolute",
-    borderRadius: "50%",
     top: 0,
     right: 0,
     left: 0,
     bottom: 0,
-    margin: "auto",
-    width: (CONNECT4WIDTH / Connect4.WIDHT) * 0.9,
-    height: (CONNECT4WIDTH / Connect4.WIDHT) * 0.9
+    margin: "auto"
   },
   connect4Foot: {
     height: CONNECT4FOOTSIZE,
