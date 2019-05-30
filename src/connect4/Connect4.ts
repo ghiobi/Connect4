@@ -102,7 +102,7 @@ export class Connect4 {
           status === Connect4GameStatus.HAS_WINNER
             ? this.getNextPlayer()
             : null,
-        playing: this.players[0],
+        playing: this.playing,
         board: [...this.board],
         status
       };
@@ -138,7 +138,10 @@ export class Connect4 {
         Connect4.WIDHT,
         Connect4.HEIGHT,
         (i, j) => j * Connect4.WIDHT + i
-      )
+      ) ||
+      // DOWN LEFT DIAGONAL CHECK
+      this.diagonalLeftDownCheck() ||
+      this.diagonalRightDownCheck()
     );
   }
 
@@ -153,7 +156,7 @@ export class Connect4 {
     OUTER: number,
     INNER: number,
     position: (outer: number, inner: number) => number
-  ) {
+  ): boolean {
     for (let i = 0; i < OUTER; i++) {
       let previous = null;
       let count = 0;
@@ -168,6 +171,101 @@ export class Connect4 {
           previous = current;
           count = 1;
         }
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Performs a left down diagonal check on the board.
+   * Returns true if a player has an equal amount of Connect4.CONNECT tokens connected.
+   */
+  private diagonalLeftDownCheck(): boolean {
+    let v = 0;
+
+    for (let i = 0; ; ) {
+      let previous = null;
+      let count = 0;
+      for (let j = v; j < Connect4.HEIGHT; j++) {
+        const position = i + Connect4.WIDHT * j + j - v;
+
+        if (position > this.board.length) {
+          break;
+        }
+
+        const current = this.board[position];
+
+        if (current !== null && previous === current) {
+          previous = current;
+          if (++count === Connect4.CONNECT) {
+            return true;
+          }
+        } else {
+          previous = current;
+          count = 1;
+        }
+
+        if (position % Connect4.WIDHT === 6) {
+          break;
+        }
+      }
+
+      if (i <= Connect4.WIDHT - Connect4.CONNECT && v === 0) {
+        i++;
+        if (i > Connect4.WIDHT - Connect4.CONNECT) {
+          i = 0;
+          v = 1;
+        }
+      } else if (i === 0 && v < Connect4.HEIGHT - Connect4.CONNECT) {
+        v++;
+      } else {
+        break;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Performs a righ down diagonal check on the board.
+   */
+  private diagonalRightDownCheck() {
+    let v = 0;
+    for (let i = Connect4.CONNECT - 1; ; ) {
+      let previous = null;
+      let count = 0;
+      for (let j = v; j < Connect4.HEIGHT; j++) {
+        const position = i + Connect4.WIDHT * j - j + v;
+
+        if (position > this.board.length) {
+          break;
+        }
+
+        const current = this.board[position];
+
+        if (current !== null && previous === current) {
+          previous = current;
+          if (++count === Connect4.CONNECT) {
+            return true;
+          }
+        } else {
+          previous = current;
+          count = 1;
+        }
+
+        if (position % Connect4.WIDHT === 0) {
+          break;
+        }
+      }
+
+      if (i < Connect4.WIDHT - 1) {
+        i++;
+      } else if (
+        i === Connect4.WIDHT - 1 &&
+        v < Connect4.HEIGHT - Connect4.CONNECT
+      ) {
+        v++;
+      } else {
+        break;
       }
     }
     return false;
