@@ -29,9 +29,11 @@ export class Connect4 {
   private playing: Player;
   private plays: number = 0;
   private cache: Connect4State;
+  private columns: number[];
 
   constructor(private players: Player[]) {
     this.board = new Array<Player>(Connect4.WIDHT * Connect4.HEIGHT).fill(null);
+    this.columns = new Array(Connect4.WIDHT).fill(0);
     this.playing = this.players[0];
     this.cache = this.state;
   }
@@ -49,45 +51,35 @@ export class Connect4 {
   /**
    * Places a token in a column.
    *
-   * @param column The column in which to place a token.
+   * @param column The column in which to place a token. [0, CONNECT.WIDTH].
    * @returns boolean Returns true if the placement of the token is correct, false otherwise.
    */
   insert(column: number): boolean {
-    let successful = false;
-
     if (this.state.status !== Connect4GameStatus.IN_PROGRESS) {
-      return successful;
+      return false;
     }
 
-    for (let i = 0; i < Connect4.HEIGHT; i++) {
-      const current = i * Connect4.WIDHT + column;
-      const ahead = (i + 1) * Connect4.WIDHT + column;
-
-      // The column is already full.
-      if (this.board[current] !== null) {
-        break;
-      }
-
-      // Search for the available slot.
-      if (
-        this.board[current] === null &&
-        (this.board[ahead] !== null || this.board[ahead] === undefined)
-      ) {
-        this.board = [...this.board];
-        this.board[current] = this.playing;
-
-        successful = true;
-        break;
-      }
+    // The column is already full.
+    if (this.columns[column] > Connect4.HEIGHT - 1) {
+      return false;
     }
 
-    if (successful) {
-      this.playing = this.getNextPlayer();
-      this.plays++;
-      this.cache = null;
-    }
+    // Get the index by the column given.
+    const index =
+      (Connect4.HEIGHT - this.columns[column]) * Connect4.WIDHT -
+      (Connect4.WIDHT - column);
 
-    return successful;
+    // Set the player on the board.
+    this.board = [...this.board];
+    this.board[index] = this.playing;
+
+    // Update logistics.
+    this.plays++;
+    this.cache = null;
+    this.playing = this.getNextPlayer();
+    this.columns[column] = this.columns[column] + 1;
+
+    return true;
   }
 
   /**
