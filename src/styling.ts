@@ -7,6 +7,7 @@ jss.setup(preset());
 
 const CONNECT4WIDTH = 500;
 const CONNECT4FOOTSIZE = 50;
+const NUM_HORIZONTAL_TOKENS = 7;
 
 const style = {
   "@global": {
@@ -39,15 +40,15 @@ const style = {
     overflow: "auto"
   },
   connect4Slot: {
-    width: CONNECT4WIDTH / Connect4.WIDHT,
-    height: CONNECT4WIDTH / Connect4.WIDHT,
+    width: CONNECT4WIDTH / NUM_HORIZONTAL_TOKENS,
+    height: CONNECT4WIDTH / NUM_HORIZONTAL_TOKENS,
     float: "left",
     position: "relative"
   },
   connect4Token: {
     borderRadius: "50%",
-    width: (CONNECT4WIDTH / Connect4.WIDHT) * 0.9,
-    height: (CONNECT4WIDTH / Connect4.WIDHT) * 0.9
+    width: (CONNECT4WIDTH / NUM_HORIZONTAL_TOKENS) * 0.9,
+    height: (CONNECT4WIDTH / NUM_HORIZONTAL_TOKENS) * 0.9
   },
   connect4SlotToken: {
     position: "absolute",

@@ -31,9 +31,14 @@ export class Connect4 {
   private cache: Connect4State;
   private columns: number[];
 
-  constructor(private players: Player[]) {
-    this.board = new Array<Player>(Connect4.WIDHT * Connect4.HEIGHT).fill(null);
-    this.columns = new Array(Connect4.WIDHT).fill(0);
+  constructor(
+    private players: Player[],
+    private height: number = 6,
+    private width = 7,
+    private connect = 4
+  ) {
+    this.board = new Array<Player>(this.width * this.height).fill(null);
+    this.columns = new Array(this.width).fill(0);
     this.playing = this.players[0];
     this.cache = this.state;
   }
@@ -41,11 +46,11 @@ export class Connect4 {
   /**
    * Returns the column by the given index.
    *
-   * @param index An number starting from [0, Connect4.WIDHT - 1].
+   * @param index An number starting from [0, this.width - 1].
    */
   getColumnByIndex(index: number): number {
-    const float = index / Connect4.WIDHT;
-    return Math.round((float - Math.floor(float)) * Connect4.WIDHT);
+    const float = index / this.width;
+    return Math.round((float - Math.floor(float)) * this.width);
   }
 
   /**
@@ -60,14 +65,13 @@ export class Connect4 {
     }
 
     // The column is already full.
-    if (this.columns[column] > Connect4.HEIGHT - 1) {
+    if (this.columns[column] > this.height - 1) {
       return false;
     }
 
     // Get the index by the column given.
     const index =
-      (Connect4.HEIGHT - this.columns[column]) * Connect4.WIDHT -
-      (Connect4.WIDHT - column);
+      (this.height - this.columns[column]) * this.width - (this.width - column);
 
     // Set the player on the board.
     this.board = [...this.board];
@@ -121,15 +125,15 @@ export class Connect4 {
     // HORIZONTAL CHECK
     return (
       this.hasWinnerOnLinearSlots(
-        Connect4.HEIGHT,
-        Connect4.WIDHT,
-        (i, j) => i * Connect4.WIDHT + j
+        this.height,
+        this.width,
+        (i, j) => i * this.width + j
       ) ||
       // VERTICAL CHECK
       this.hasWinnerOnLinearSlots(
-        Connect4.WIDHT,
-        Connect4.HEIGHT,
-        (i, j) => j * Connect4.WIDHT + i
+        this.width,
+        this.height,
+        (i, j) => j * this.width + i
       ) ||
       // DOWN LEFT DIAGONAL CHECK
       this.diagonalLeftDownCheck() ||
@@ -156,7 +160,7 @@ export class Connect4 {
         const current = this.board[position(i, j)];
         if (current !== null && previous === current) {
           previous = current;
-          if (++count === Connect4.CONNECT) {
+          if (++count === this.connect) {
             return true;
           }
         } else {
@@ -170,7 +174,7 @@ export class Connect4 {
 
   /**
    * Performs a left down diagonal check on the board.
-   * Returns true if a player has an equal amount of Connect4.CONNECT tokens connected.
+   * Returns true if a player has an equal amount of this.connect tokens connected.
    */
   private diagonalLeftDownCheck(): boolean {
     let v = 0;
@@ -178,8 +182,8 @@ export class Connect4 {
     for (let i = 0; ; ) {
       let previous = null;
       let count = 0;
-      for (let j = v; j < Connect4.HEIGHT; j++) {
-        const position = i + Connect4.WIDHT * j + j - v;
+      for (let j = v; j < this.height; j++) {
+        const position = i + this.width * j + j - v;
 
         if (position > this.board.length) {
           break;
@@ -189,7 +193,7 @@ export class Connect4 {
 
         if (current !== null && previous === current) {
           previous = current;
-          if (++count === Connect4.CONNECT) {
+          if (++count === this.connect) {
             return true;
           }
         } else {
@@ -197,18 +201,18 @@ export class Connect4 {
           count = 1;
         }
 
-        if (position % Connect4.WIDHT === 6) {
+        if (position % this.width === 6) {
           break;
         }
       }
 
-      if (i <= Connect4.WIDHT - Connect4.CONNECT && v === 0) {
+      if (i <= this.width - this.connect && v === 0) {
         i++;
-        if (i > Connect4.WIDHT - Connect4.CONNECT) {
+        if (i > this.width - this.connect) {
           i = 0;
           v = 1;
         }
-      } else if (i === 0 && v < Connect4.HEIGHT - Connect4.CONNECT) {
+      } else if (i === 0 && v < this.height - this.connect) {
         v++;
       } else {
         break;
@@ -222,11 +226,11 @@ export class Connect4 {
    */
   private diagonalRightDownCheck() {
     let v = 0;
-    for (let i = Connect4.CONNECT - 1; ; ) {
+    for (let i = this.connect - 1; ; ) {
       let previous = null;
       let count = 0;
-      for (let j = v; j < Connect4.HEIGHT; j++) {
-        const position = i + Connect4.WIDHT * j - j + v;
+      for (let j = v; j < this.height; j++) {
+        const position = i + this.width * j - j + v;
 
         if (position > this.board.length) {
           break;
@@ -236,7 +240,7 @@ export class Connect4 {
 
         if (current !== null && previous === current) {
           previous = current;
-          if (++count === Connect4.CONNECT) {
+          if (++count === this.connect) {
             return true;
           }
         } else {
@@ -244,17 +248,14 @@ export class Connect4 {
           count = 1;
         }
 
-        if (position % Connect4.WIDHT === 0) {
+        if (position % this.width === 0) {
           break;
         }
       }
 
-      if (i < Connect4.WIDHT - 1) {
+      if (i < this.width - 1) {
         i++;
-      } else if (
-        i === Connect4.WIDHT - 1 &&
-        v < Connect4.HEIGHT - Connect4.CONNECT
-      ) {
+      } else if (i === this.width - 1 && v < this.height - this.connect) {
         v++;
       } else {
         break;
@@ -267,7 +268,7 @@ export class Connect4 {
    * Returns the game status state.
    */
   private get status(): Connect4GameStatus {
-    if (this.plays < Connect4.CONNECT * 2 - 1) {
+    if (this.plays < this.connect * 2 - 1) {
       return Connect4GameStatus.IN_PROGRESS;
     }
     if (this.hasWinner()) {
