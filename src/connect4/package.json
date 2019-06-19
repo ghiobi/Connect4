@@ -1,0 +1,16 @@
+{
+  "name": "connect4-engine",
+  "version": "1.0.2",
+  "description": "A simple connect4 engine.",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ghiobi/Connect4.git"
+  },
+  "author": "Laurendy Lam <lamlaurendy@gmail.com> (http://laurendylam.com/)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ghiobi/Connect4/issues"
+  },
+  "homepage": "https://github.com/ghiobi/Connect4#readme"
+}
