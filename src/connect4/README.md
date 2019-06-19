@@ -1,20 +1,27 @@
 # Connect4 Engine
 
-A simple connect 4 engine with dynamic settings to adjust the size of the board, and the number of tokens to connect.
+A simple zero dependency dynamic connect 4 engine with parameters to adjust the size of the board and the number of tokens to connect.
 
 ## Usage
 
+TypeScript
+
 ```js
-import { Connect4, Player } from "connect4-engine";
+import { Connect4, Player, Connect4GameStatus } from "connect4-engine";
 
 const game = new Connect4([new Player("#000"), new Player("#FFF")]);
 
 // Insert tokens in a column
-game.insert(0); // First player.
-game.insert(3); // Second player.
+game.insert(0); // Player 1 inserts in column 1.
+game.insert(3); // Player 2 inserts in column 4.
+game.insert(0); // Player 1 inserts in column 1.
+...
 
-// Get game state at any time.
-console.log(game.state);
+// Print out board.
+console.log(game.state.board);
+
+// Get game status.
+console.log(game.state.status === Connect4GameStatus.IN_PROGRESS);
 ```
 
 ## API
@@ -27,7 +34,7 @@ console.log(game.state);
 
 Type: Player[]
 
-Two player objects.
+Two player objects. Length must be 2.
 
 #### width - Optional - Default = 7
 
@@ -45,7 +52,7 @@ Number of vertical slots.
 
 Type: number
 
-Number of slots to connect.
+Number of tokens to connect.
 
 - insert(column): boolean
 
@@ -55,7 +62,7 @@ Returns true if insertion was successful.
 
 Type: number
 
-The column in which to insert the token in. 0 being the first column, or 1 to be the second, and etc.
+The column in which to insert the token in. 0 being the first column, or 1 to be the second, and so on.
 
 - getColumnByIndex(index): column
 
@@ -72,6 +79,8 @@ The index in the board array.
 Returns the state game object, Connect4State.
 
 ### Connect4State
+
+A object representating the entire game state.
 
 #### winner
 
@@ -94,6 +103,8 @@ The board depicting the players on the board.
 #### status
 
 Type: Connect4GameStatus
+
+A TypeScript enum representing the game status.
 
 ### Connect4GameStatus
 

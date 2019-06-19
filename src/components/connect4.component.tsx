@@ -6,7 +6,7 @@ import {
   Connect4State,
   Player,
   Connect4GameStatus
-} from "../connect4";
+} from "connect4-engine";
 
 export class Connect4Component extends React.Component {
   public props: { style: CSSProperties };

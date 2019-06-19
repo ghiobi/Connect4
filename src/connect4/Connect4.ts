@@ -37,6 +37,20 @@ export class Connect4 {
     private width = 7,
     private connect = 4
   ) {
+    if (this.players.length !== 2) {
+      throw new Error(
+        `Connect4 - Constructor requires 2 players, got ${
+          players.length
+        } instead.`
+      );
+    }
+
+    if (this.connect > this.height || this.connect > this.width) {
+      throw new Error(
+        `Connect4 - Constructor wrong width or height enterred. Please make it larger than the connect size.`
+      );
+    }
+
     this.board = new Array<Player>(this.width * this.height).fill(null);
     this.columns = new Array(this.width).fill(0);
     this.playing = this.players[0];
