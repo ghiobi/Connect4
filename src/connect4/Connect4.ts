@@ -33,14 +33,13 @@ export class Connect4 {
 
   constructor(
     private players: Player[],
-    private height: number = 6,
+    private height = 6,
     private width = 7,
     private connect = 4
   ) {
     this.board = new Array<Player>(this.width * this.height).fill(null);
     this.columns = new Array(this.width).fill(0);
     this.playing = this.players[0];
-    this.cache = this.state;
   }
 
   /**
@@ -184,11 +183,6 @@ export class Connect4 {
       let count = 0;
       for (let j = v; j < this.height; j++) {
         const position = i + this.width * j + j - v;
-
-        if (position > this.board.length) {
-          break;
-        }
-
         const current = this.board[position];
 
         if (current !== null && previous === current) {
@@ -231,11 +225,6 @@ export class Connect4 {
       let count = 0;
       for (let j = v; j < this.height; j++) {
         const position = i + this.width * j - j + v;
-
-        if (position > this.board.length) {
-          break;
-        }
-
         const current = this.board[position];
 
         if (current !== null && previous === current) {
