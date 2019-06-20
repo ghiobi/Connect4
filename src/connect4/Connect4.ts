@@ -214,7 +214,7 @@ export class Connect4 {
           count = 1;
         }
 
-        if (position % this.width === 6) {
+        if (position % this.width === this.height) {
           break;
         }
       }
@@ -236,7 +236,7 @@ export class Connect4 {
   }
 
   /**
-   * Performs a righ down diagonal check on the board.
+   * Performs a right down diagonal check on the board.
    */
   private diagonalRightDownCheck() {
     let v = 0;
