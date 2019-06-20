@@ -67,7 +67,7 @@ export class Connect4 {
   }
 
   /**
-   * Places a token in a column.
+   * Places a token in a column. O(N)
    *
    * @param column The column in which to place a token. [0, this.width - 1].
    * @returns boolean Returns true if the placement of the token is correct, false otherwise.
@@ -115,7 +115,7 @@ export class Connect4 {
             ? this.getNextPlayer()
             : null,
         playing: this.playing,
-        board: [...this.board],
+        board: this.board,
         status
       };
     }
@@ -133,13 +133,13 @@ export class Connect4 {
   }
 
   /**
-   * Determines if there is a winner.
+   * Determines if there is a winner. O(N)
    *
    * @returns Returns true if there is, false otherwise.
    */
   private hasWinner(): boolean {
-    // HORIZONTAL CHECK
     return (
+      // HORIZONTAL CHECK
       this.hasWinnerOnLinearSlots(
         this.height,
         this.width,
@@ -153,6 +153,7 @@ export class Connect4 {
       ) ||
       // DOWN LEFT DIAGONAL CHECK
       this.diagonalLeftDownCheck() ||
+      // DOWN Right DIAGONAL CHECK
       this.diagonalRightDownCheck()
     );
   }
@@ -194,8 +195,9 @@ export class Connect4 {
    */
   private diagonalLeftDownCheck(): boolean {
     let v = 0;
+    let i = 0;
 
-    for (let i = 0; ; ) {
+    while (true) {
       let previous = null;
       let count = 0;
       for (let j = v; j < this.height; j++) {
@@ -229,6 +231,7 @@ export class Connect4 {
         break;
       }
     }
+
     return false;
   }
 
@@ -237,7 +240,9 @@ export class Connect4 {
    */
   private diagonalRightDownCheck() {
     let v = 0;
-    for (let i = this.connect - 1; ; ) {
+    let i = this.connect - 1;
+
+    while (true) {
       let previous = null;
       let count = 0;
       for (let j = v; j < this.height; j++) {
@@ -267,6 +272,7 @@ export class Connect4 {
         break;
       }
     }
+
     return false;
   }
 
