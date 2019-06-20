@@ -94,6 +94,9 @@ export class Connect4 {
     this.plays++;
     this.cache = null;
     this.playing = this.getNextPlayer();
+
+    // Mutate and update columns.
+    this.columns = [...this.columns];
     this.columns[column] = this.columns[column] + 1;
 
     return true;
