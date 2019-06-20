@@ -1,6 +1,6 @@
 {
   "name": "connect4-engine",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A simple connect4 engine.",
   "main": "index.js",
   "repository": {
