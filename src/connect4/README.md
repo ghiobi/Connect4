@@ -11,7 +11,7 @@ import { Connect4, Player, Connect4GameStatus } from "connect4-engine";
 
 const game = new Connect4([new Player("#000"), new Player("#FFF")]);
 
-// Insert tokens in a column
+// Insert tokens in a column.
 game.insert(0); // Player 1 inserts in column 1.
 game.insert(3); // Player 2 inserts in column 4.
 game.insert(0); // Player 1 inserts in column 1.
@@ -28,53 +28,53 @@ console.log(game.state.status === Connect4GameStatus.IN_PROGRESS);
 
 ### Connect4
 
-- constructor(players: Player[], width = 7, height = 6, connect = 4)
+#### constructor(players: Player[][, width = 7, height = 6, connect = 4])
 
-#### players
+##### - players
 
 Type: Player[]
 
 Two player objects. Length must be 2.
 
-#### width - Optional - Default = 7
+##### - width - Optional - Default = 7
 
 Type: number
 
 Number of horizontal slots.
 
-#### height - Optional - Default = 6
+##### - height - Optional - Default = 6
 
 Type: number
 
 Number of vertical slots.
 
-#### connect - Optional - Default = 4
+##### - connect - Optional - Default = 4
 
 Type: number
 
 Number of tokens to connect.
 
-- insert(column): boolean
+#### insert(column): boolean
 
 Returns true if insertion was successful.
 
-#### column
+##### - column
 
 Type: number
 
 The column in which to insert the token in. 0 being the first column, or 1 to be the second, and so on.
 
-- getColumnByIndex(index): column
+#### getColumnByIndex(index): column
 
 Returns the column number.
 
-#### index
+##### - index
 
 Type: number
 
 The index in the board array.
 
-- state
+#### state
 
 Returns the state game object, Connect4State.
 
@@ -116,9 +116,9 @@ Type: Enum
 
 ### Player
 
-constructor(color: string)
+#### constructor(color: string)
 
-#### color
+##### - color
 
 Type: string
 

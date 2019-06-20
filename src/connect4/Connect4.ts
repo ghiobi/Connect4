@@ -69,7 +69,7 @@ export class Connect4 {
   /**
    * Places a token in a column.
    *
-   * @param column The column in which to place a token. [0, CONNECT.WIDTH].
+   * @param column The column in which to place a token. [0, this.width - 1].
    * @returns boolean Returns true if the placement of the token is correct, false otherwise.
    */
   insert(column: number): boolean {
