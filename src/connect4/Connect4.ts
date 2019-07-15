@@ -21,10 +21,6 @@ export interface Connect4State {
 }
 
 export class Connect4 {
-  static readonly HEIGHT = 6;
-  static readonly WIDHT = 7;
-  static readonly CONNECT = 4;
-
   private board: Player[];
   private playing: Player;
   private plays: number = 0;
