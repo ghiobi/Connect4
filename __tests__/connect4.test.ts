@@ -374,4 +374,19 @@ describe("Connect 4 Engine", () => {
       expect(connect4.state.status).toBe(Connect4GameStatus.IN_PROGRESS);
     });
   });
+
+  describe("cloning instances", () => {
+    it("should have different instance connect4 games", () => {
+      connect4 = new Connect4(players);
+
+      const clone = connect4.clone();
+      clone.insert(0);
+
+      expect(clone.state.board.some(player => !!player)).toBeTruthy();
+      expect(clone.state.playing).toBe(players[1]);
+
+      expect(connect4.state.board.some(player => !!player)).toBeFalsy();
+      expect(connect4.state.playing).toBe(players[0]);
+    });
+  });
 });

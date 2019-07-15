@@ -83,7 +83,6 @@ export class Connect4 {
       (this.height - this.columns[column]) * this.width - (this.width - column);
 
     // Set the player on the board.
-    this.board = [...this.board];
     this.board[index] = this.playing;
 
     // Update logistics.
@@ -92,7 +91,6 @@ export class Connect4 {
     this.playing = this.getNextPlayer();
 
     // Mutate and update columns.
-    this.columns = [...this.columns];
     this.columns[column] = this.columns[column] + 1;
 
     return true;
@@ -111,7 +109,7 @@ export class Connect4 {
             ? this.getNextPlayer()
             : null,
         playing: this.playing,
-        board: this.board,
+        board: [...this.board],
         status
       };
     }
@@ -149,7 +147,7 @@ export class Connect4 {
       ) ||
       // DOWN LEFT DIAGONAL CHECK
       this.diagonalLeftDownCheck() ||
-      // DOWN Right DIAGONAL CHECK
+      // DOWN RIGHT DIAGONAL CHECK
       this.diagonalRightDownCheck()
     );
   }
@@ -286,5 +284,26 @@ export class Connect4 {
       return Connect4GameStatus.TIE;
     }
     return Connect4GameStatus.IN_PROGRESS;
+  }
+
+  /**
+   * Clones the current instance.
+   * @returns Connect4 A connect4 instance.
+   */
+  public clone() {
+    const clone = new Connect4(
+      this.players,
+      this.height,
+      this.width,
+      this.connect
+    );
+
+    clone.cache = this.cache;
+    clone.plays = this.plays;
+    clone.playing = this.playing;
+    clone.board = [...this.board];
+    clone.columns = [...this.columns];
+
+    return clone;
   }
 }
