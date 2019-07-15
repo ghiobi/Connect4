@@ -78,6 +78,10 @@ The index in the board array.
 
 Returns the state game object, Connect4State.
 
+#### clone(): Connect4
+
+Returns a cloned instance of the current Connect4 game.
+
 ### Connect4State
 
 A object representating the entire game state.
